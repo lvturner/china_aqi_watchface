@@ -1,0 +1,20 @@
+{
+  "uuid": "7022bc07-e396-4b93-8ca5-b0c9cb7969b1",
+  "shortName": "China AQI Watchface",
+  "longName": "China air quality index watchface",
+  "companyName": "Lee Turner",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "city": 1,
+    "aqi": 2,
+    "icon": 3,
+    "temperature": 4
+  },
+  "resources": {
+    "media": []
+  }
+}
