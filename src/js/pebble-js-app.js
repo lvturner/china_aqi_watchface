@@ -13,12 +13,8 @@ function fetchWeather(latitude, longitude) {
                    var weatherResult = response.list[0];
                    temperature = Math.round(weatherResult.main.temp - 273.15);
                    city = weatherResult.name;
-                   localStorage.setItem("city", city);
-                   localStorage.setItem("temperature", temperature);
                    fetch_pollution_data(city, temperature);
                  }
-               } else {
-                 fetch_pollution_data(localStorage.getItem("city"), localStorage.getItem("temperature"));
                }
              }
            };
@@ -33,13 +29,7 @@ function locationSuccess(pos) {
 
 function locationError(err) {
   var coords = localStorage.getItem("coords");
-  if(coords === null || coords === undefined) {
-    console.warn('location error (' + err.code + '): ' + err.message);
-    Pebble.sendAppMessage({
-      "city":"Loc Unavailable",
-      "temperature":"N/A"
-    });
-  } else {
+  if(coords !== null || coords !== undefined) {
     fetchWeather(coords.latitude, coords.longitude);
   }
 }
@@ -56,22 +46,11 @@ function fetch_pollution_data(city, temperature) {
     if (req.readyState == 4 && req.status == 200) {
       if (req.status == 200) {
         var response = JSON.parse(req.responseText);
-        console.log('response received:');
-        console.log(JSON.stringify(response));
         var aqi = response[0].aqi;
-        console.log('aqi:' + aqi);
-        localStorage.setItem("aqi", aqi);
-        // bit silly hacking these to strings actually...
         Pebble.sendAppMessage({
-          "temperature":+temperature,
+          "temperature":temperature,
           "city":city,
-          "aqi":+aqi
-        });
-      } else {
-        Pebble.sendAppMessage({
-          "temperature":""+localStorage.getItem("temperature"),
-          "city":localStorage.getItem("city"),
-          "aqi":""+localStorage.getItem("aqi")
+          "aqi":aqi
         });
       }
     }
